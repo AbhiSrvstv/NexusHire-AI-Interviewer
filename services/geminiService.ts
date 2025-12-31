@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Feedback, ResumeData } from "../types";
 
@@ -6,12 +5,22 @@ export class GeminiService {
   private ai: GoogleGenAI;
 
   constructor() {
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    /** * CHANGE: Use import.meta.env.VITE_ for Vite projects.
+     * Ensure you add 'VITE_GEMINI_API_KEY' to your Vercel Environment Variables.
+     */
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+    
+    // Safety check for production
+    if (!apiKey) {
+      console.error("VITE_GEMINI_API_KEY is missing! App will not function.");
+    }
+
+    this.ai = new GoogleGenAI(apiKey);
   }
 
   async processResume(base64Data: string, mimeType: string): Promise<ResumeData> {
     const response = await this.ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-1.5-flash", // Updated to a stable version
       contents: [
         {
           parts: [
@@ -51,7 +60,7 @@ export class GeminiService {
       : "";
 
     const response = await this.ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-1.5-flash", 
       contents: `
         Analyze this interview transcript for a ${role} position.
         ${contextStr}
