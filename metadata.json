@@ -1,0 +1,8 @@
+{
+  "name": "NexusHire AI Interviewer",
+  "description": "A cutting-edge AI-powered recruitment platform by IntervYou, featuring real-time voice interviews, behavioral analysis, and automated candidate screening.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
